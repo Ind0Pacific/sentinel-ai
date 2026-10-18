@@ -1,0 +1,48 @@
+{
+  "model_name": "sentinel_auth_anomaly_detector",
+  "model_version": "v1.0.0",
+  "model_file": "auth_anomaly_detector_v1.joblib",
+  "scaler_file": "auth_scaler_v1.joblib",
+  "sha256_checksum": "b16cab8d5a04799005dc66005caadbd9c9f86ecbdb1f6154d74a00a4eb29cb73",
+  "algorithm": "IsolationForest + Deterministic Fallback Heuristics",
+  "feature_schema_version": "v1.1",
+  "features": [
+    "is_failure",
+    "is_success",
+    "is_blocked",
+    "is_sensitive_resource",
+    "is_off_hours",
+    "is_known_threat_ip",
+    "window_fail_count_ip",
+    "window_attempt_count_ip",
+    "distinct_users_targeted_ip",
+    "success_after_failure_seq",
+    "fail_ratio_10m",
+    "burst_rate_per_min"
+  ],
+  "score_threshold": 0.75,
+  "fallback_rules_available": [
+    "RULE_BRUTE_FORCE_IP_THRESHOLD",
+    "RULE_PASSWORD_SPRAY_SUSPECTED",
+    "RULE_SUCCESS_AFTER_REPEATED_FAILURES",
+    "RULE_THREAT_INTEL_MALICIOUS_IP",
+    "RULE_RAPID_EVENT_BURST",
+    "RULE_OFF_HOURS_SENSITIVE_RESOURCE"
+  ],
+  "training_timestamp": "2026-10-18T16:08:59.200427+00:00",
+  "metrics": {
+    "test_precision": 0.9208,
+    "test_recall": 0.9894,
+    "test_f1": 0.9538,
+    "false_positive_rate": 0.027,
+    "confusion_matrix": {
+      "true_negative": 288,
+      "false_positive": 8,
+      "false_negative": 1,
+      "true_positive": 93
+    }
+  },
+  "training_dataset": "data/processed/authentication/auth_train.csv",
+  "manifest_reference": "data/manifests/auth_events_manifest.json",
+  "status": "production"
+}

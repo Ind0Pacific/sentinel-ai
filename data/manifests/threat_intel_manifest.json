@@ -1,0 +1,29 @@
+{
+  "dataset_name": "sentinel_threat_intelligence_feed",
+  "source_url": "internal://sentinel/threat_intel/curated_indicators",
+  "original_filename": "threat_indicators.json",
+  "retrieval_timestamp": "2026-10-18T16:08:57.659698+00:00",
+  "file_size_bytes": 2237,
+  "sha256_checksum": "dae074df58c4634568804e8006d3cd55a06de56a47f8bc33939a91bdc1311ecd",
+  "is_official_checksum": false,
+  "license": "CC-BY-SA-4.0 / Open Threat Exchange Terms",
+  "citation": "SENTINEL AI Curated Threat Intelligence Cache (2026)",
+  "indicator_count": 5,
+  "indicator_types": [
+    "domain",
+    "ipv4",
+    "sha256"
+  ],
+  "sources_represented": [
+    "AbuseIPDB (Community Reports)",
+    "NIST National Software Reference Library (NSRL)",
+    "URLhaus (abuse.ch)",
+    "Google Public DNS",
+    "CISA Automated Indicator Sharing (AIS)"
+  ],
+  "known_limitations": [
+    "Enrichment database only; not a supervised model training set.",
+    "Cache miss results strictly return unlisted status without fabricating verdicts."
+  ],
+  "manifest_saved_at": "2026-10-18T16:08:57.659698+00:00"
+}

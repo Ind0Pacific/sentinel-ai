@@ -1,0 +1,70 @@
+{
+  "pipeline_run_id": "PIPE-1792339338",
+  "mode": "lightweight",
+  "completed_at": "2026-10-18T16:02:27.148058+00:00",
+  "total_duration_seconds": 8.34,
+  "stages": [
+    {
+      "stage": "1. Data Ingestion & Synthetic Generation",
+      "status": "COMPLETED",
+      "duration_seconds": 0.15
+    },
+    {
+      "stage": "2.1 Preprocess Phishing URLs",
+      "status": "COMPLETED",
+      "duration_seconds": 0.09
+    },
+    {
+      "stage": "2.2 Preprocess Network Flows",
+      "status": "COMPLETED",
+      "duration_seconds": 0.19
+    },
+    {
+      "stage": "2.3 Preprocess Auth Logs",
+      "status": "COMPLETED",
+      "duration_seconds": 0.08
+    },
+    {
+      "stage": "2.4 Preprocess Malware Static Vectors",
+      "status": "COMPLETED",
+      "duration_seconds": 0.04
+    },
+    {
+      "stage": "3. Data Quality Validation",
+      "status": "COMPLETED",
+      "duration_seconds": 0.09
+    },
+    {
+      "stage": "4.1 Train Phishing Detector",
+      "status": "COMPLETED",
+      "duration_seconds": 0.44
+    },
+    {
+      "stage": "4.2 Train Network Intrusion Detector",
+      "status": "COMPLETED",
+      "duration_seconds": 0.38
+    },
+    {
+      "stage": "4.3 Train Authentication Anomaly Detector",
+      "status": "COMPLETED",
+      "duration_seconds": 0.16
+    },
+    {
+      "stage": "4.4 Train Malware Static Detector",
+      "status": "COMPLETED",
+      "duration_seconds": 0.18
+    },
+    {
+      "stage": "5. Model Evaluation & Latency Benchmarks",
+      "status": "COMPLETED",
+      "duration_seconds": 6.53
+    },
+    {
+      "stage": "6. Model Registry Registration",
+      "status": "COMPLETED",
+      "duration_seconds": 0.02
+    }
+  ],
+  "active_models_count": 4,
+  "status": "SUCCESS"
+}

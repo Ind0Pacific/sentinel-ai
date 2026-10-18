@@ -1,0 +1,74 @@
+[
+  {
+    "indicator": "185.220.101.5",
+    "indicator_type": "ipv4",
+    "threat_type": "tor_exit_node_brute_force",
+    "malicious": true,
+    "confidence": 0.95,
+    "source": "AbuseIPDB (Community Reports)",
+    "first_seen": "2026-09-01T12:00:00Z",
+    "last_seen": "2026-10-18T10:00:00Z",
+    "expiration": "2026-11-18T00:00:00Z",
+    "mitre_tactics": [
+      "TA0001:Initial Access",
+      "TA0006:Credential Access"
+    ],
+    "license": "CC-BY-SA-4.0"
+  },
+  {
+    "indicator": "45.154.255.89",
+    "indicator_type": "ipv4",
+    "threat_type": "password_spray_botnet",
+    "malicious": true,
+    "confidence": 0.88,
+    "source": "CISA Automated Indicator Sharing (AIS)",
+    "first_seen": "2026-09-15T08:00:00Z",
+    "last_seen": "2026-10-17T22:30:00Z",
+    "expiration": "2026-11-01T00:00:00Z",
+    "mitre_tactics": [
+      "TA0006:Credential Access"
+    ],
+    "license": "US Government Public Domain / TLP:CLEAR"
+  },
+  {
+    "indicator": "paypal-verification-portal.xyz",
+    "indicator_type": "domain",
+    "threat_type": "credential_phishing",
+    "malicious": true,
+    "confidence": 0.99,
+    "source": "URLhaus (abuse.ch)",
+    "first_seen": "2026-10-10T14:20:00Z",
+    "last_seen": "2026-10-18T06:15:00Z",
+    "expiration": "2026-11-10T00:00:00Z",
+    "mitre_tactics": [
+      "TA0001:Initial Access"
+    ],
+    "license": "CC0-1.0 (Public Domain)"
+  },
+  {
+    "indicator": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "indicator_type": "sha256",
+    "threat_type": "empty_file_hash",
+    "malicious": false,
+    "confidence": 1.0,
+    "source": "NIST National Software Reference Library (NSRL)",
+    "first_seen": "2000-01-01T00:00:00Z",
+    "last_seen": "2026-10-18T00:00:00Z",
+    "expiration": null,
+    "mitre_tactics": [],
+    "license": "Public Domain"
+  },
+  {
+    "indicator": "8.8.8.8",
+    "indicator_type": "ipv4",
+    "threat_type": "public_resolver",
+    "malicious": false,
+    "confidence": 1.0,
+    "source": "Google Public DNS",
+    "first_seen": "2009-12-03T00:00:00Z",
+    "last_seen": "2026-10-18T00:00:00Z",
+    "expiration": null,
+    "mitre_tactics": [],
+    "license": "Public Service"
+  }
+]

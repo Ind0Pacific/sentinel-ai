@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENTINEL AI — Dataset Engineering & ML Threat Lab</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            900: '#070b14',
+                            800: '#0d1527',
+                            700: '#14213d',
+                            accent: '#00f5d4',
+                            danger: '#ef233c',
+                            warning: '#ffb703',
+                            blue: '#4361ee'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070b14;
+            color: #e2e8f0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .glow-accent {
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.15);
+        }
+        .glow-danger {
+            box-shadow: 0 0 15px rgba(239, 35, 60, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-cyber-800/90 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="p-2 rounded-lg bg-cyber-accent/10 border border-cyber-accent/30 text-cyber-accent">
+                <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold tracking-wider text-white flex items-center gap-2">
+                    SENTINEL AI <span class="text-xs px-2 py-0.5 rounded bg-cyber-blue/20 text-cyber-blue font-mono border border-cyber-blue/40">v2.0 (Kali Ready)</span>
+                </h1>
+                <p class="text-xs text-slate-400">Cybersecurity Dataset Engineering, ML Training & Threat Intelligence Platform</p>
+            </div>
+        </div>
+        <!-- System Health Badge & Pipeline Trigger -->
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 text-xs font-mono bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-full">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="api-status">API: Connected (Port 8000)</span>
+            </div>
+            <button onclick="triggerPipelineRun()" class="px-4 py-2 bg-cyber-accent/20 hover:bg-cyber-accent/30 text-cyber-accent border border-cyber-accent/50 rounded-lg text-sm font-semibold flex items-center space-x-2 transition">
+                <i data-lucide="play" class="w-4 h-4"></i>
+                <span>Run Pipeline</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="border-b border-slate-800 bg-cyber-900 px-6 py-2">
+        <nav class="flex space-x-2" aria-label="Tabs">
+            <button onclick="switchTab('explorer')" id="tab-btn-explorer" class="tab-btn active px-4 py-2 text-sm font-medium rounded-lg text-cyber-accent bg-slate-800 border-b-2 border-cyber-accent flex items-center space-x-2">
+                <i data-lucide="database" class="w-4 h-4"></i>
+                <span>Dataset Explorer</span>
+            </button>
+            <button onclick="switchTab('models')" id="tab-btn-models" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center space-x-2">
+                <i data-lucide="cpu" class="w-4 h-4"></i>
+                <span>Model Lab & Metrics</span>
+            </button>
+            <button onclick="switchTab('pipeline')" id="tab-btn-pipeline" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center space-x-2">
+                <i data-lucide="activity" class="w-4 h-4"></i>
+                <span>Pipeline Monitor</span>
+            </button>
+            <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="tab-btn px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center space-x-2">
+                <i data-lucide="terminal" class="w-4 h-4"></i>
+                <span>Live Threat Analyzer Sandbox</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
+
+        <!-- 1. DATASET EXPLORER TAB -->
+        <section id="tab-explorer" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Dataset Manifests & Telemetry Repositories</h2>
+                    <p class="text-sm text-slate-400">Inspected public benchmarks, synthetic generators, and verified data quality gates.</p>
+                </div>
+                <button onclick="fetchDatasets()" class="text-xs text-cyber-accent hover:underline flex items-center space-x-1">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>Refresh Manifests</span>
+                </button>
+            </div>
+
+            <!-- Datasets Grid -->
+            <div id="datasets-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div class="p-6 bg-slate-900 border border-slate-800 rounded-xl text-center text-slate-500">
+                    Loading dataset manifests...
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. MODEL LAB TAB -->
+        <section id="tab-models" class="space-y-6 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Production Model Registry & Evaluation Benchmarks</h2>
+                    <p class="text-sm text-slate-400">Actual measured metrics on isolated test sets. No fabricated benchmark scores.</p>
+                </div>
+                <button onclick="fetchModels()" class="text-xs text-cyber-accent hover:underline flex items-center space-x-1">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>Refresh Models</span>
+                </button>
+            </div>
+
+            <div id="models-container" class="space-y-6">
+                <div class="p-6 bg-slate-900 border border-slate-800 rounded-xl text-center text-slate-500">
+                    Loading registered models...
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PIPELINE MONITOR TAB -->
+        <section id="tab-pipeline" class="space-y-6 hidden">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white">End-to-End Pipeline Monitor</h2>
+                    <p class="text-sm text-slate-400">Real-time tracking of ingestion, preprocessing, training, and model registration.</p>
+                </div>
+                <button onclick="fetchJobs()" class="text-xs text-cyber-accent hover:underline flex items-center space-x-1">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>Refresh Jobs</span>
+                </button>
+            </div>
+
+            <div id="pipeline-jobs-list" class="space-y-4">
+                <div class="p-6 bg-slate-900 border border-slate-800 rounded-xl text-center text-slate-500">
+                    Loading pipeline status...
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LIVE THREAT ANALYZER SANDBOX TAB -->
+        <section id="tab-sandbox" class="space-y-6 hidden">
+            <div>
+                <h2 class="text-xl font-bold text-white">Live Threat Inference Sandbox</h2>
+                <p class="text-sm text-slate-400">Directly test real-time URL lexical scanning, network flow classification, and authentication anomaly engines.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Sandbox 1: URL Analyzer -->
+                <div class="bg-cyber-800/60 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-cyber-accent">
+                        <i data-lucide="link" class="w-5 h-5"></i>
+                        <h3 class="font-bold text-white">URL Phishing Scanner</h3>
+                    </div>
+                    <p class="text-xs text-slate-400">Scans 22 lexical features offline without DNS or network requests.</p>
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-300 font-mono">Target URL:</label>
+                        <input id="input-url" type="text" value="http://paypal-verification-portal.xyz/login.php" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-xs font-mono text-white focus:outline-none focus:border-cyber-accent">
+                    </div>
+                    <button onclick="analyzeUrlSandbox()" class="w-full py-2 bg-cyber-accent/20 hover:bg-cyber-accent/30 text-cyber-accent border border-cyber-accent/40 rounded text-xs font-bold transition">
+                        Run URL Analysis
+                    </button>
+                    <div id="url-result" class="p-3 bg-slate-900/90 rounded border border-slate-800 text-xs font-mono space-y-1 hidden"></div>
+                </div>
+
+                <!-- Sandbox 2: Network Flow Analyzer -->
+                <div class="bg-cyber-800/60 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-cyber-blue">
+                        <i data-lucide="wifi" class="w-5 h-5"></i>
+                        <h3 class="font-bold text-white">Network Flow Detector</h3>
+                    </div>
+                    <p class="text-xs text-slate-400">Evaluates flow duration, packet rates, and protocol states (UNSW-NB15 schema).</p>
+                    <div class="space-y-2 text-xs font-mono">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-slate-400">Duration (s):</label>
+                                <input id="input-dur" type="number" step="0.1" value="0.05" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Rate (pps):</label>
+                                <input id="input-rate" type="number" value="150" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-slate-400">Protocol:</label>
+                                <select id="input-proto" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                                    <option value="tcp">TCP</option>
+                                    <option value="udp">UDP</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Service:</label>
+                                <select id="input-service" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                                    <option value="http">HTTP</option>
+                                    <option value="dns">DNS</option>
+                                    <option value="-">-</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="analyzeNetworkSandbox()" class="w-full py-2 bg-cyber-blue/20 hover:bg-cyber-blue/30 text-cyber-blue border border-cyber-blue/40 rounded text-xs font-bold transition">
+                        Run Network Analysis
+                    </button>
+                    <div id="net-result" class="p-3 bg-slate-900/90 rounded border border-slate-800 text-xs font-mono space-y-1 hidden"></div>
+                </div>
+
+                <!-- Sandbox 3: Auth Anomaly Analyzer -->
+                <div class="bg-cyber-800/60 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <div class="flex items-center space-x-2 text-cyber-warning">
+                        <i data-lucide="key" class="w-5 h-5"></i>
+                        <h3 class="font-bold text-white">Authentication Anomaly Engine</h3>
+                    </div>
+                    <p class="text-xs text-slate-400">Combines Isolation Forest with deterministic brute-force heuristics.</p>
+                    <div class="space-y-2 text-xs font-mono">
+                        <div>
+                            <label class="text-slate-400">Source IP:</label>
+                            <input id="input-auth-ip" type="text" value="185.220.101.5" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-slate-400">Fail Count (10m):</label>
+                                <input id="input-fail-count" type="number" value="14" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                            </div>
+                            <div>
+                                <label class="text-slate-400">Burst Rate/min:</label>
+                                <input id="input-burst" type="number" value="12" class="w-full bg-slate-900 border border-slate-700 rounded p-1 text-white">
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="analyzeAuthSandbox()" class="w-full py-2 bg-cyber-warning/20 hover:bg-cyber-warning/30 text-cyber-warning border border-cyber-warning/40 rounded text-xs font-bold transition">
+                        Run Auth Anomaly Analysis
+                    </button>
+                    <div id="auth-result" class="p-3 bg-slate-900/90 rounded border border-slate-800 text-xs font-mono space-y-1 hidden"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-4 px-6 text-center text-xs text-slate-500 font-mono">
+        SENTINEL AI Threat Engineering Platform — Tested on Kali Linux | Zero Untrusted URL Crawling | Zero Execution of Binaries
+    </footer>
+
+    <!-- Frontend Logic -->
+    <script>
+        const API_BASE = "http://127.0.0.1:8000/api/v1";
+
+        function switchTab(tabName) {
+            document.querySelectorAll("main > section").forEach(el => el.classList.add("hidden"));
+            document.querySelectorAll(".tab-btn").forEach(btn => {
+                btn.classList.remove("text-cyber-accent", "bg-slate-800", "border-b-2", "border-cyber-accent");
+                btn.classList.add("text-slate-400");
+            });
+
+            const activeSection = document.getElementById(`tab-${tabName}`);
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+
+            if (activeSection) activeSection.classList.remove("hidden");
+            if (activeBtn) {
+                activeBtn.classList.add("text-cyber-accent", "bg-slate-800", "border-b-2", "border-cyber-accent");
+                activeBtn.classList.remove("text-slate-400");
+            }
+            lucide.createIcons();
+        }
+
+        async function fetchDatasets() {
+            const grid = document.getElementById("datasets-grid");
+            try {
+                const res = await fetch(`${API_BASE}/datasets`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+
+                if (data.length === 0) {
+                    grid.innerHTML = `<div class="col-span-3 p-8 text-center text-slate-500">No manifests found. Run the pipeline first.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = data.map(d => `
+                    <div class="bg-cyber-800/70 border border-slate-800 hover:border-slate-700 rounded-xl p-5 space-y-3 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-cyber-accent font-semibold">${d.id}</span>
+                            <span class="text-xs text-slate-400 font-mono">${d.license || 'Proprietary'}</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">${d.dataset_name}</h3>
+                        <p class="text-xs text-slate-400 truncate" title="${d.source_url}">Source: ${d.source_url}</p>
+                        <div class="border-t border-slate-800 pt-3 flex items-center justify-between text-xs font-mono">
+                            <span class="text-slate-400">Records:</span>
+                            <span class="text-white font-bold">${typeof d.record_counts === 'object' ? JSON.stringify(d.record_counts) : d.record_counts}</span>
+                        </div>
+                        <div class="text-[10px] text-slate-500 font-mono truncate" title="SHA-256: ${d.sha256_checksum}">
+                            SHA: ${d.sha256_checksum.substring(0, 16)}...
+                        </div>
+                    </div>
+                `).join('');
+                lucide.createIcons();
+            } catch (err) {
+                grid.innerHTML = `<div class="col-span-3 p-6 bg-red-950/30 border border-red-800 text-red-300 text-xs rounded-xl">API Offline or unreached at ${API_BASE}/datasets (${err.message})</div>`;
+            }
+        }
+
+        async function fetchModels() {
+            const container = document.getElementById("models-container");
+            try {
+                const res = await fetch(`${API_BASE}/models`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const models = await res.json();
+
+                container.innerHTML = await Promise.all(models.map(async m => {
+                    let metrics = {};
+                    try {
+                        const mRes = await fetch(`${API_BASE}/models/${m.id}/metrics`);
+                        if (mRes.ok) metrics = await mRes.json();
+                    } catch (e) {}
+
+                    const cm = metrics.confusion_matrix || {};
+                    return `
+                        <div class="bg-cyber-800/80 border border-slate-800 rounded-xl p-6 space-y-4">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                                <div>
+                                    <div class="flex items-center space-x-2">
+                                        <h3 class="text-lg font-bold text-white">${m.model_name}</h3>
+                                        <span class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700">${m.status}</span>
+                                        <span class="text-xs font-mono text-slate-400">${m.model_version}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-400 font-mono">Task: ${m.supported_task} | Algorithm: ${m.algorithm}</p>
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono">
+                                    Latency: <span class="text-cyber-accent font-bold">${metrics.inference_latency_ms || 'N/A'} ms</span> | Threshold: <span class="text-white">${m.decision_threshold}</span>
+                                </div>
+                            </div>
+
+                            <!-- Metrics Cards -->
+                            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 font-mono">
+                                <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-center">
+                                    <span class="text-xs text-slate-400 block">Precision</span>
+                                    <span class="text-base font-bold text-cyber-accent">${metrics.test_precision !== undefined ? metrics.test_precision : 'N/A'}</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-center">
+                                    <span class="text-xs text-slate-400 block">Recall</span>
+                                    <span class="text-base font-bold text-cyber-blue">${metrics.test_recall !== undefined ? metrics.test_recall : 'N/A'}</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-center">
+                                    <span class="text-xs text-slate-400 block">F1 Score</span>
+                                    <span class="text-base font-bold text-white">${metrics.test_f1 !== undefined ? metrics.test_f1 : 'N/A'}</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-center">
+                                    <span class="text-xs text-slate-400 block">PR-AUC</span>
+                                    <span class="text-base font-bold text-emerald-400">${metrics.test_pr_auc !== undefined ? metrics.test_pr_auc : 'N/A'}</span>
+                                </div>
+                                <div class="p-3 bg-slate-900 border border-slate-800 rounded-lg text-center">
+                                    <span class="text-xs text-slate-400 block">FPR</span>
+                                    <span class="text-base font-bold ${metrics.false_positive_rate <= 0.03 ? 'text-emerald-400' : 'text-red-400'}">${metrics.false_positive_rate !== undefined ? metrics.false_positive_rate : 'N/A'}</span>
+                                </div>
+                            </div>
+
+                            <!-- Confusion Matrix Mini Table -->
+                            ${cm.true_negative !== undefined || cm.TN !== undefined ? `
+                                <div class="text-xs font-mono text-slate-400 bg-slate-900/60 p-3 rounded-lg border border-slate-800 flex items-center justify-around">
+                                    <span>TN: <b class="text-white">${cm.true_negative ?? cm.TN}</b></span>
+                                    <span>FP: <b class="text-cyber-danger">${cm.false_positive ?? cm.FP}</b></span>
+                                    <span>FN: <b class="text-cyber-warning">${cm.false_negative ?? cm.FN}</b></span>
+                                    <span>TP: <b class="text-cyber-accent">${cm.true_positive ?? cm.TP}</b></span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                })).then(rendered => rendered.join(''));
+                lucide.createIcons();
+            } catch (err) {
+                container.innerHTML = `<div class="p-6 bg-red-950/30 border border-red-800 text-red-300 text-xs rounded-xl">Failed loading models: ${err.message}</div>`;
+            }
+        }
+
+        async function fetchJobs() {
+            const list = document.getElementById("pipeline-jobs-list");
+            try {
+                const res = await fetch(`${API_BASE}/training/jobs`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const jobs = await res.json();
+
+                if (jobs.length === 0) {
+                    list.innerHTML = `<div class="p-8 text-center text-slate-500">No jobs recorded yet.</div>`;
+                    return;
+                }
+
+                list.innerHTML = jobs.map(j => `
+                    <div class="bg-cyber-800/80 border border-slate-800 rounded-xl p-5 space-y-3 font-mono">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-white">${j.job_id}</span>
+                            <span class="text-xs px-2 py-0.5 rounded ${j.status === 'SUCCESS' ? 'bg-emerald-950 text-emerald-400 border border-emerald-700' : 'bg-red-950 text-red-400 border border-red-700'}">${j.status}</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Duration: ${j.duration_seconds || '0'}s | Mode: ${j.mode} | Completed: ${j.completed_at || j.started_at}</p>
+                        ${j.stages && j.stages.length ? `
+                            <div class="space-y-1.5 pt-2 border-t border-slate-800">
+                                ${j.stages.map(s => `
+                                    <div class="text-xs flex items-center justify-between text-slate-300">
+                                        <span class="flex items-center space-x-2">
+                                            <span class="w-1.5 h-1.5 rounded-full ${s.status === 'COMPLETED' ? 'bg-cyber-accent' : 'bg-red-400'}"></span>
+                                            <span>${s.stage}</span>
+                                        </span>
+                                        <span class="text-slate-500">${s.duration_seconds}s</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+                lucide.createIcons();
+            } catch (err) {
+                list.innerHTML = `<div class="p-6 bg-red-950/30 border border-red-800 text-red-300 text-xs rounded-xl">Error fetching pipeline jobs: ${err.message}</div>`;
+            }
+        }
+
+        async function triggerPipelineRun() {
+            if (!confirm("Launch SENTINEL AI lightweight reproducible pipeline?")) return;
+            try {
+                const res = await fetch(`${API_BASE}/training/jobs/run`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({mode: "lightweight"})
+                });
+                const data = await res.json();
+                alert(`Pipeline Job Launched: ${data.job_id}`);
+                switchTab('pipeline');
+                fetchJobs();
+            } catch (err) {
+                alert(`Failed to trigger pipeline: ${err.message}`);
+            }
+        }
+
+        async function analyzeUrlSandbox() {
+            const url = document.getElementById("input-url").value;
+            const resDiv = document.getElementById("url-result");
+            resDiv.classList.remove("hidden");
+            resDiv.innerHTML = `<span class="text-slate-400">Analyzing...</span>`;
+
+            try {
+                const res = await fetch(`${API_BASE}/analyze/url`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({url})
+                });
+                const data = await res.json();
+                const isBad = data.verdict === 'phishing';
+                resDiv.innerHTML = `
+                    <div class="text-xs font-bold ${isBad ? 'text-red-400' : 'text-emerald-400'}">VERDICT: ${data.verdict.toUpperCase()} (Risk: ${(data.risk_score * 100).toFixed(1)}%)</div>
+                    <div class="text-slate-400 text-[11px]">Model: ${data.model_version} | Threshold: ${data.decision_threshold}</div>
+                    ${data.threat_intel_match ? `<div class="text-amber-400 text-[11px]">Threat Intel Match: ${data.threat_intel_match.threat_type}</div>` : ''}
+                    <div class="text-[10px] text-slate-500 pt-1">Features: len=${data.evidence.url_length}, entropy=${data.evidence.url_entropy}, kw=${data.evidence.has_security_keyword}</div>
+                `;
+            } catch (e) {
+                resDiv.innerHTML = `<span class="text-red-400">Error: ${e.message}</span>`;
+            }
+        }
+
+        async function analyzeNetworkSandbox() {
+            const dur = parseFloat(document.getElementById("input-dur").value);
+            const rate = parseFloat(document.getElementById("input-rate").value);
+            const proto = document.getElementById("input-proto").value;
+            const service = document.getElementById("input-service").value;
+            const resDiv = document.getElementById("net-result");
+            resDiv.classList.remove("hidden");
+            resDiv.innerHTML = `<span class="text-slate-400">Evaluating flow...</span>`;
+
+            try {
+                const res = await fetch(`${API_BASE}/analyze/network`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({dur, rate, proto, service, spkts: 10, dpkts: 8, sbytes: 1024, dbytes: 2048})
+                });
+                const data = await res.json();
+                const isBad = data.verdict === 'intrusion_detected';
+                resDiv.innerHTML = `
+                    <div class="text-xs font-bold ${isBad ? 'text-red-400' : 'text-emerald-400'}">VERDICT: ${data.verdict.toUpperCase()} (Confidence: ${(data.confidence * 100).toFixed(1)}%)</div>
+                    <div class="text-slate-400 text-[11px]">Intrusion Probability: ${(data.intrusion_probability * 100).toFixed(1)}% | Anomaly: ${data.anomaly_flag}</div>
+                `;
+            } catch (e) {
+                resDiv.innerHTML = `<span class="text-red-400">Error: ${e.message}</span>`;
+            }
+        }
+
+        async function analyzeAuthSandbox() {
+            const source_ip = document.getElementById("input-auth-ip").value;
+            const window_fail_count_ip = parseInt(document.getElementById("input-fail-count").value);
+            const burst_rate_per_min = parseFloat(document.getElementById("input-burst").value);
+            const resDiv = document.getElementById("auth-result");
+            resDiv.classList.remove("hidden");
+            resDiv.innerHTML = `<span class="text-slate-400">Evaluating event...</span>`;
+
+            try {
+                const res = await fetch(`${API_BASE}/analyze/authentication`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({user_id: "alice.admin@sentinel.internal", source_ip, status: "failure", window_fail_count_ip, burst_rate_per_min})
+                });
+                const data = await res.json();
+                resDiv.innerHTML = `
+                    <div class="text-xs font-bold ${data.is_anomaly ? 'text-red-400' : 'text-emerald-400'}">VERDICT: ${data.verdict.toUpperCase()} (Risk: ${(data.risk_score * 100).toFixed(1)}%)</div>
+                    <div class="text-slate-400 text-[11px]">Triggered Rules: ${data.triggered_rules.join(', ') || 'None'}</div>
+                    ${data.threat_intel_match ? `<div class="text-amber-400 text-[11px]">Threat Intel: ${data.threat_intel_match.threat_type}</div>` : ''}
+                `;
+            } catch (e) {
+                resDiv.innerHTML = `<span class="text-red-400">Error: ${e.message}</span>`;
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            fetchDatasets();
+            fetchModels();
+            fetchJobs();
+        });
+    </script>
+</body>
+</html>

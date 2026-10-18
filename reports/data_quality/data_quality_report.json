@@ -1,0 +1,58 @@
+{
+  "phishing_train": {
+    "dataset_name": "phishing_train",
+    "validation_timestamp": "2026-10-18T16:08:58.204700+00:00",
+    "total_records": 1114,
+    "total_columns": 27,
+    "passed_quality_gates": true,
+    "duplicate_rows": 0,
+    "class_balance": {
+      "1": 876,
+      "0": 238
+    },
+    "issues_flagged": [],
+    "missing_ratios": {}
+  },
+  "network_train": {
+    "dataset_name": "network_train",
+    "validation_timestamp": "2026-10-18T16:08:58.234672+00:00",
+    "total_records": 2450,
+    "total_columns": 56,
+    "passed_quality_gates": true,
+    "duplicate_rows": 0,
+    "class_balance": {
+      "0": 1584,
+      "1": 866
+    },
+    "issues_flagged": [],
+    "missing_ratios": {}
+  },
+  "auth_train": {
+    "dataset_name": "auth_train",
+    "validation_timestamp": "2026-10-18T16:08:58.248391+00:00",
+    "total_records": 1818,
+    "total_columns": 13,
+    "passed_quality_gates": false,
+    "duplicate_rows": 1780,
+    "class_balance": {},
+    "issues_flagged": [
+      "Found 1780 full duplicate rows.",
+      "Target column 'is_anomaly' has fewer than 2 distinct classes: [0]"
+    ],
+    "missing_ratios": {}
+  },
+  "malware_train": {
+    "dataset_name": "malware_train",
+    "validation_timestamp": "2026-10-18T16:08:58.269712+00:00",
+    "total_records": 1050,
+    "total_columns": 33,
+    "passed_quality_gates": true,
+    "duplicate_rows": 0,
+    "class_balance": {
+      "0": 621,
+      "1": 429
+    },
+    "issues_flagged": [],
+    "missing_ratios": {}
+  }
+}

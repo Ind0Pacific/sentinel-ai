@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Large raw datasets and binary archives
+data/raw/network/*.pcap
+data/raw/network/*.bin
+data/raw/malware_features/*.tar.bz2
+data/raw/malware_features/*.jsonl
+data/quarantine/*
+
+# Sensitive credentials or local keys
+.env
+*.pem
+*.key
+credentials.json
+
+# Model binary checkpoints (allow default small baseline models, ignore large dumps)
+*.weights
+*.h5
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Reports and logs
+*.log
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/

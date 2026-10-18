@@ -1,0 +1,63 @@
+{
+  "model_name": "sentinel_phishing_url_detector",
+  "model_version": "v1.0.0",
+  "model_file": "phishing_detector_v1.joblib",
+  "sha256_checksum": "7776622033f80a9c9e7e4b86ce6ec617a800caf7c0723e8cff22668acf118f9b",
+  "algorithm": "RandomForestClassifier",
+  "feature_schema_version": "v1.2",
+  "features": [
+    "url_length",
+    "hostname_length",
+    "path_length",
+    "query_length",
+    "num_subdomains",
+    "is_ip_address",
+    "is_suspicious_tld",
+    "digit_ratio",
+    "letter_ratio",
+    "num_hyphens",
+    "num_dots",
+    "num_underscores",
+    "num_slashes",
+    "num_questionmarks",
+    "num_equal_signs",
+    "num_at_symbols",
+    "num_ampersands",
+    "num_percent_signs",
+    "has_security_keyword",
+    "keyword_count",
+    "has_non_standard_port",
+    "has_double_slash_path",
+    "url_entropy",
+    "hostname_entropy"
+  ],
+  "top_features": {
+    "num_dots": 0.1486,
+    "num_subdomains": 0.1415,
+    "url_length": 0.1164,
+    "hostname_length": 0.1058,
+    "hostname_entropy": 0.089,
+    "keyword_count": 0.0749,
+    "num_hyphens": 0.0529,
+    "has_security_keyword": 0.0473
+  },
+  "decision_threshold": 0.8,
+  "training_timestamp": "2026-10-18T16:08:58.635709+00:00",
+  "metrics": {
+    "test_precision": 1.0,
+    "test_recall": 1.0,
+    "test_f1": 1.0,
+    "test_roc_auc": 1.0,
+    "test_pr_auc": 1.0,
+    "false_positive_rate": 0.0,
+    "confusion_matrix": {
+      "true_negative": 19,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_positive": 194
+    }
+  },
+  "training_dataset": "data/processed/phishing/phishing_train.csv",
+  "manifest_reference": "data/manifests/phishing_urls_manifest.json",
+  "status": "production"
+}

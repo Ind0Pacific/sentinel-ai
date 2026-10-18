@@ -1,0 +1,62 @@
+{
+  "dataset_name": "sentinel_phishing_urls_benchmark",
+  "source_url": "https://huggingface.co/datasets/flwrlabs/fed-phishing-urls (curated + synthetic offline benchmark)",
+  "original_filename": "phishing_urls_benchmark.csv",
+  "retrieval_timestamp": "2026-10-18T16:08:57.824508+00:00",
+  "file_size_bytes": 193640,
+  "sha256_checksum": "2610c092e5672dd4fb940514c89dc25138811962ceec638b95a601e9b86b5e37",
+  "is_official_checksum": false,
+  "license": "CC-BY-4.0 / Apache-2.0",
+  "citation": "SENTINEL AI Phishing Lexical Feature Benchmark (2026)",
+  "original_schema": {
+    "url": "string (untrusted text)",
+    "label": "int (0=legitimate, 1=phishing)"
+  },
+  "extracted_features": [
+    "url_length",
+    "hostname_length",
+    "path_length",
+    "query_length",
+    "num_subdomains",
+    "is_ip_address",
+    "is_suspicious_tld",
+    "digit_ratio",
+    "letter_ratio",
+    "num_hyphens",
+    "num_dots",
+    "num_underscores",
+    "num_slashes",
+    "num_questionmarks",
+    "num_equal_signs",
+    "num_at_symbols",
+    "num_ampersands",
+    "num_percent_signs",
+    "has_security_keyword",
+    "keyword_count",
+    "has_non_standard_port",
+    "has_double_slash_path",
+    "url_entropy",
+    "hostname_entropy",
+    "domain_group"
+  ],
+  "preprocessing_version": "v1.2",
+  "record_counts": {
+    "total_raw": 1553,
+    "train": 1114,
+    "val": 226,
+    "test": 213
+  },
+  "class_distribution": {
+    "total_phishing": 1245,
+    "total_legitimate": 308,
+    "train_phishing": 876,
+    "val_phishing": 175,
+    "test_phishing": 194
+  },
+  "split_method": "GroupedByDomain (Zero cross-split domain leakage)",
+  "known_limitations": [
+    "URLs processed strictly via static lexical features without DNS/content analysis.",
+    "Advanced compromised legitimate domains with benign lexical profiles require behavioral or DOM analysis."
+  ],
+  "manifest_saved_at": "2026-10-18T16:08:57.850250+00:00"
+}

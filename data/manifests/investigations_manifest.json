@@ -1,0 +1,29 @@
+{
+  "dataset_name": "sentinel_ai_investigation_evaluation_benchmark",
+  "source_url": "internal://sentinel/investigations/ground_truth_cases_v1",
+  "original_filename": "evaluation_cases.jsonl",
+  "retrieval_timestamp": "2026-10-18T16:08:57.661749+00:00",
+  "file_size_bytes": 6097,
+  "sha256_checksum": "c35d20aa717179d51e95571acd649db7b9f6a3591ddfa4873606513801ebefb4",
+  "is_official_checksum": false,
+  "license": "Apache-2.0",
+  "citation": "SENTINEL AI Investigation Agent Benchmark Suite (2026)",
+  "case_count": 4,
+  "categories_covered": [
+    "insufficient_evidence",
+    "phishing_credential_harvesting",
+    "credential_access_brute_force",
+    "benign_false_positive"
+  ],
+  "severity_levels": [
+    "LOW",
+    "HIGH",
+    "CRITICAL",
+    "MEDIUM"
+  ],
+  "known_limitations": [
+    "Evaluation benchmark for investigation report accuracy and reasoning constraints.",
+    "Evaluates deterministic criteria and factual citations without training LLMs."
+  ],
+  "manifest_saved_at": "2026-10-18T16:08:57.661749+00:00"
+}
