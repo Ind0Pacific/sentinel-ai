@@ -40,5 +40,8 @@ htmlcov/
 
 # Node / Frontend
 frontend/node_modules/
+node_modules/
+.next/
 frontend/.next/
+out/
 frontend/out/
